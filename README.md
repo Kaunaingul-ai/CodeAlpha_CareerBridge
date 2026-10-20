@@ -182,6 +182,28 @@ The `screenshots/` directory contains evidence of the completed application.
 | `11_tests_passed.png` | Automated Django test results |
 
 Screenshots document the major user workflows and backend testing outcomes.
+### Application Preview
+
+#### Homepage
+![CareerBridge Homepage](screenshots/01_homepage.png)
+
+#### Job Listings
+![Job Listings](screenshots/02_job_listings.png)
+
+#### Candidate Dashboard
+![Candidate Dashboard](screenshots/06_candidate_dashboard.png)
+
+#### Employer Dashboard
+![Employer Dashboard](screenshots/07_employer_dashboard.png)
+
+#### Application Submission
+![Successful Application](screenshots/09_application_success.png)
+
+#### Application Status Management
+![Application Status Update](screenshots/10_status_updated.png)
+
+#### Automated Test Results
+![Django Tests Passed](screenshots/11_tests_passed.png)
 
 ## Example Workflow
 
