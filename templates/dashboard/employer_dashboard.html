@@ -1,0 +1,218 @@
+
+{% extends "base.html" %}
+
+{% block title %}Employer Dashboard | CareerBridge{% endblock %}
+
+{% block content %}
+
+<section class="listing-hero">
+    <div class="container">
+        <span class="section-kicker">EMPLOYER WORKSPACE</span>
+        <h1>Manage your <span>opportunities.</span></h1>
+        <p>
+            Welcome back, {{ employer.company_name }}.
+            Manage your job listings and review applications.
+        </p>
+    </div>
+</section>
+
+<section class="candidate-dashboard-section">
+    <div class="container">
+
+        <div class="candidate-dashboard-header">
+            <div>
+                <span class="section-kicker">YOUR WORKSPACE</span>
+                <h2>Employer overview</h2>
+                <p>Your recruitment activity in one place.</p>
+            </div>
+        </div>
+
+        <div class="candidate-stats-grid">
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">💼</div>
+                <span>Total jobs</span>
+                <strong>{{ total_jobs }}</strong>
+                <small>Jobs you've created</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">✅</div>
+                <span>Active jobs</span>
+                <strong>{{ active_jobs }}</strong>
+                <small>Currently accepting applications</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">📄</div>
+                <span>Total applications</span>
+                <strong>{{ total_applications }}</strong>
+                <small>Applications received</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">🕒</div>
+                <span>Pending reviews</span>
+                <strong>{{ pending_applications }}</strong>
+                <small>Applications awaiting review</small>
+            </div>
+
+        </div>
+
+        <div class="candidate-applications-panel">
+
+            <div class="candidate-panel-header">
+                <div>
+                    <h2>My job listings</h2>
+                    <p>View the opportunities posted by your company.</p>
+                </div>
+                <span class="candidate-count">
+                    {{ total_jobs }} jobs
+                </span>
+            </div>
+
+            {% if jobs %}
+                <div class="candidate-applications-list">
+                    {% for job in jobs %}
+                        <div class="candidate-application-item">
+
+                            <div class="candidate-application-info">
+                                <div class="candidate-application-logo">
+                                    💼
+                                </div>
+
+                                <div>
+                                    <h3>{{ job.title }}</h3>
+                                    <p>{{ employer.company_name }}</p>
+                                    <small>
+                                        📍 {{ job.location }}
+                                        · {{ job.get_job_type_display }}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="candidate-application-actions">
+
+                                {% if job.is_active %}
+                                    <span class="candidate-status candidate-status-shortlisted">
+                                        Active
+                                    </span>
+                                {% else %}
+                                    <span class="candidate-status candidate-status-rejected">
+                                        Inactive
+                                    </span>
+                                {% endif %}
+
+                                <a href="{% url 'job-detail-page' job.id %}">
+                                    View Job →
+                                </a>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="candidate-empty-state">
+                    <div>💼</div>
+                    <h3>No jobs posted yet</h3>
+                    <p>Your job listings will appear here.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="candidate-applications-panel employer-received-panel">
+
+            <div class="candidate-panel-header">
+                <div>
+                    <h2>Received applications</h2>
+                    <p>Review candidates who applied to your jobs.</p>
+                </div>
+
+                <span class="candidate-count">
+                    {{ total_applications }} applications
+                </span>
+            </div>
+
+            {% if applications %}
+                <div class="candidate-applications-list">
+
+                    {% for application in applications %}
+                        <div class="candidate-application-item">
+
+                            <div class="candidate-application-info">
+                                <div class="candidate-application-logo">
+                                    👤
+                                </div>
+
+                                <div>
+                                    <h3>{{ application.candidate.full_name }}</h3>
+                                    <p>
+                                        Applied for:
+                                        {{ application.job.title }}
+                                    </p>
+                                    <small>
+                                        Applied
+                                        {{ application.applied_at|date:"M d, Y" }}
+                                    </small>
+                                </div>
+                            </div>
+<div class="candidate-application-actions">
+
+    <span class="candidate-status candidate-status-{{ application.status }}">
+        {{ application.get_status_display }}
+    </span>
+
+<form
+    class="employer-status-form"
+    data-application-id="{{ application.id }}"
+>
+    <select
+        name="status"
+        class="employer-status-select"
+        aria-label="Application status for {{ application.candidate.full_name }}"
+    >
+        {% for value, label in application.STATUS_CHOICES %}
+            {% if application.status == value %}
+                <option value="{{ value }}" selected>
+                    {{ label }}
+                </option>
+            {% else %}
+                <option value="{{ value }}">
+                    {{ label }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="employer-status-save">
+        Save
+    </button>
+</form>
+    <a href="{% url 'job-detail-page' application.job.id %}">
+        View Job →
+    </a>
+
+</div>
+
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% else %}
+                <div class="candidate-empty-state">
+                    <div>📋</div>
+                    <h3>No applications received</h3>
+                    <p>
+                        When candidates apply to your jobs,
+                        their applications will appear here.
+                    </p>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</section>
+{% load static %}
+<script src="{% static 'js/employer_dashboard.js' %}" defer></script>
+{% endblock %}

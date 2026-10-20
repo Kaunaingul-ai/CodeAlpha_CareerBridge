@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+
+{% block title %}Application Status | CareerBridge{% endblock %}
+
+{% block content %}
+<section class="listing-hero">
+    <div class="container">
+        <span class="section-kicker">CAREERBRIDGE APPLICATIONS</span>
+        <h1>
+            {% if already_applied %}
+                You've already <span>applied.</span>
+            {% else %}
+                Application <span>submitted!</span>
+            {% endif %}
+        </h1>
+        <p>Stay informed about the next steps in your career journey.</p>
+    </div>
+</section>
+
+<section class="detail-section">
+    <div class="container">
+        <div class="application-result-card">
+
+            <div class="application-result-icon">
+                {% if already_applied %}ℹ{% else %}✓{% endif %}
+            </div>
+
+            {% if already_applied %}
+                <h2>Application already received</h2>
+                <p>
+                    You have already submitted an application for this position.
+                    You don't need to apply again.
+                </p>
+            {% else %}
+                <h2>Your application is on its way!</h2>
+                <p>
+                    Your application has been saved successfully.
+                    The employer can now review your submission.
+                </p>
+            {% endif %}
+
+            <div class="application-result-job">
+                <span>POSITION</span>
+                <h3>{{ job.title }}</h3>
+                <p>{{ job.employer.company_name }}</p>
+
+                {% if application %}
+                    <span class="application-status">
+                        Status: {{ application.get_status_display }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="application-result-actions">
+                <a href="{% url 'job-detail-page' job.id %}"
+                   class="application-secondary-link">
+                    View Job Details
+                </a>
+
+                <a href="{% url 'job-list-page' %}"
+                   class="filter-submit application-primary-link">
+                    Explore More Jobs →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CareerBridge - Connect with opportunities and build your career.">
+    <title>{% block title %}CareerBridge | Find Your Next Opportunity{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container nav-container">
+        <a href="/" class="brand">
+            <span class="brand-icon">C<span class="brand-dot">.</span></span>
+            <span>Career<span class="brand-accent">Bridge</span></span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/jobs/" class="nav-link">Find Jobs</a>
+            <a href="/#how-it-works" class="nav-link">How It Works</a>
+        </nav>
+
+
+<div class="nav-actions">
+    {% if user.is_authenticated %}
+
+        <span class="user-greeting">
+            Hi, {{ user.username }}
+        </span>
+
+        {% if user.employer_profile %}
+            <a href="{% url 'employer-dashboard' %}"
+               class="btn btn-outline">
+                My Dashboard
+            </a>
+
+        {% elif user.candidate_profile %}
+            <a href="{% url 'candidate-dashboard' %}"
+               class="btn btn-outline">
+                My Dashboard
+            </a>
+
+        {% else %}
+            <a href="/admin/" class="btn btn-outline">
+                Account
+            </a>
+        {% endif %}
+
+    {% else %}
+        <a href="/api-auth/login/" class="btn btn-text">
+            Log In
+        </a>
+
+        <a href="/api-auth/login/" class="btn btn-primary">
+            Get Started
+        </a>
+    {% endif %}
+</div>
+
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-content">
+        <div>
+            <div class="footer-brand">Career<span>Bridge</span></div>
+            <p>Connecting talent with opportunity.</p>
+        </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/jobs/">Explore Jobs</a>
+            <a href="/admin/">Administration</a>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <span>&copy; {% now "Y" %} CareerBridge. All rights reserved.</span>
+        <span>Built with Django &amp; Django REST Framework</span>
+    </div>
+</footer>
+
+</body>
+</html>

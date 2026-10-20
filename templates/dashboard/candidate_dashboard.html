@@ -1,0 +1,121 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Dashboard | CareerBridge{% endblock %}
+
+{% block content %}
+
+<section class="listing-hero">
+    <div class="container">
+        <span class="section-kicker">MY CAREERBRIDGE</span>
+        <h1>My career <span>dashboard.</span></h1>
+        <p>Welcome back, {{ candidate.full_name }}. Track your applications and discover new opportunities.</p>
+    </div>
+</section>
+
+<section class="candidate-dashboard-section">
+    <div class="container">
+
+        <div class="candidate-dashboard-header">
+            <div>
+                <span class="section-kicker">YOUR ACTIVITY</span>
+                <h2>Application overview</h2>
+                <p>Everything about your career journey in one place.</p>
+            </div>
+
+            <a href="{% url 'job-list-page' %}" class="candidate-explore-btn">
+                Explore Jobs →
+            </a>
+        </div>
+
+        <div class="candidate-stats-grid">
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">📄</div>
+                <span>Total applications</span>
+                <strong>{{ total_applications }}</strong>
+                <small>Jobs you've applied for</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">🕒</div>
+                <span>Pending review</span>
+                <strong>{{ pending_count }}</strong>
+                <small>Awaiting employer feedback</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">⭐</div>
+                <span>Shortlisted</span>
+                <strong>{{ shortlisted_count }}</strong>
+                <small>Applications moving forward</small>
+            </div>
+
+            <div class="candidate-stat-card">
+                <div class="candidate-stat-icon">📁</div>
+                <span>My resumes</span>
+                <strong>{{ resumes_count }}</strong>
+                <small>Uploaded documents</small>
+            </div>
+        </div>
+
+        <div class="candidate-applications-panel">
+
+            <div class="candidate-panel-header">
+                <div>
+                    <h2>My applications</h2>
+                    <p>View the latest progress on your applications.</p>
+                </div>
+                <span class="candidate-count">{{ total_applications }} applications</span>
+            </div>
+
+            {% if applications %}
+                <div class="candidate-applications-list">
+                    {% for application in applications %}
+                        <div class="candidate-application-item">
+
+                            <div class="candidate-application-info">
+                                <div class="candidate-application-logo">
+                                    {{ application.job.employer.company_name|slice:":1"|upper }}
+                                </div>
+
+                                <div>
+                                    <h3>{{ application.job.title }}</h3>
+                                    <p>{{ application.job.employer.company_name }}</p>
+                                    <small>
+                                        📍 {{ application.job.location }}
+                                        &nbsp;·&nbsp;
+                                        Applied {{ application.applied_at|date:"M d, Y" }}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="candidate-application-actions">
+                                <span class="candidate-status candidate-status-{{ application.status }}">
+                                    {{ application.get_status_display }}
+                                </span>
+
+                                <a href="{% url 'job-detail-page' application.job.id %}">
+                                    View Job →
+                                </a>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="candidate-empty-state">
+                    <div>🔎</div>
+                    <h3>No applications yet</h3>
+                    <p>Start exploring job opportunities and apply for a role that fits your skills.</p>
+                    <a href="{% url 'job-list-page' %}" class="candidate-explore-btn">
+                        Find Opportunities →
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

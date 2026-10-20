@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+
+{% block title %}Apply for {{ job.title }} | CareerBridge{% endblock %}
+
+{% block content %}
+
+<section class="listing-hero">
+    <div class="container">
+        <a href="{% url 'job-detail-page' job.id %}" class="detail-back">
+            ← Back to job details
+        </a>
+
+        <span class="section-kicker">YOUR NEXT CAREER STEP</span>
+        <h1>Apply with <span>confidence.</span></h1>
+        <p>Complete your application for {{ job.title }}.</p>
+    </div>
+</section>
+
+<section class="detail-section">
+    <div class="container detail-layout">
+
+        <div class="detail-main">
+            <span class="section-kicker">JOB APPLICATION</span>
+            <h2>{{ job.title }}</h2>
+            <p>{{ job.employer.company_name }}</p>
+
+            {% if errors %}
+                <div class="application-errors" role="alert">
+                    <strong>Please review your application:</strong>
+                    {% for field, messages in errors.items %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if resumes %}
+                <form method="post" class="career-application-form">
+                    {% csrf_token %}
+
+                    <label for="resume">Select your resume</label>
+                    <select name="resume" id="resume" required>
+                        <option value="">Choose a resume</option>
+                        {% for resume in resumes %}
+                            <option value="{{ resume.id }}">
+                                Resume #{{ resume.id }} — Uploaded {{ resume.uploaded_at|date:"M d, Y" }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="cover_letter">Cover letter (optional)</label>
+                    <textarea
+                        name="cover_letter"
+                        id="cover_letter"
+                        rows="7"
+                        placeholder="Introduce yourself and explain why you're interested in this opportunity..."
+                    >{{ request.POST.cover_letter }}</textarea>
+
+                    <button type="submit" class="filter-submit">
+                        Submit Application →
+                    </button>
+                </form>
+            {% else %}
+                <div class="application-errors">
+                    <strong>No resume available</strong>
+                    <p>
+                        Please upload a resume to your candidate account
+                        before applying for this job.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+
+        <aside class="detail-sidebar">
+            <div class="detail-sidebar-label">APPLICATION SUMMARY</div>
+
+            <div class="detail-info-row">
+                <span>Position</span>
+                <strong>{{ job.title }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Company</span>
+                <strong>{{ job.employer.company_name }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Location</span>
+                <strong>{{ job.location }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Employment type</span>
+                <strong>{{ job.get_job_type_display }}</strong>
+            </div>
+
+            <div class="detail-next">
+                <span>✦</span>
+                <p>
+                    Make sure you've selected the correct resume before
+                    submitting your application.
+                </p>
+            </div>
+        </aside>
+
+    </div>
+</section>
+
+{% endblock %}

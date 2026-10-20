@@ -1,0 +1,101 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} | CareerBridge{% endblock %}
+
+{% block content %}
+
+<section class="listing-hero">
+    <div class="container">
+        <a href="{% url 'job-list-page' %}" class="detail-back">
+            ← Back to all jobs
+        </a>
+        <span class="section-kicker">CAREER OPPORTUNITY</span>
+        <h1>{{ job.title }}</h1>
+        <p>{{ job.employer.company_name }}</p>
+    </div>
+</section>
+
+<section class="detail-section">
+    <div class="container detail-layout">
+
+        <article class="detail-main">
+            <div class="detail-company">
+                <div class="listing-company-icon">
+                    {{ job.employer.company_name|slice:":1"|upper }}
+                </div>
+
+                <div>
+                    <h2>{{ job.title }}</h2>
+                    <p>{{ job.employer.company_name }}</p>
+                </div>
+            </div>
+
+            <div class="listing-tags">
+                <span>📍 {{ job.location }}</span>
+                <span>💼 {{ job.get_job_type_display }}</span>
+                <span>🕒 Posted {{ job.created_at|date:"M d, Y" }}</span>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <h3>About this opportunity</h3>
+
+            <div class="detail-description">
+                {{ job.description|linebreaks }}
+            </div>
+        </article>
+
+        <aside class="detail-sidebar">
+            <div class="detail-sidebar-label">JOB OVERVIEW</div>
+
+            <div class="detail-info-row">
+                <span>Company</span>
+                <strong>{{ job.employer.company_name }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Location</span>
+                <strong>{{ job.location }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Employment type</span>
+                <strong>{{ job.get_job_type_display }}</strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Listed salary</span>
+                <strong>
+                    {% if job.salary %}
+                        {{ job.salary|floatformat:0 }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="detail-info-row">
+                <span>Date posted</span>
+                <strong>{{ job.created_at|date:"M d, Y" }}</strong>
+            </div>
+
+            <div class="detail-next">
+                <span>✦</span>
+                <p>
+                    Interested in this opportunity?
+                    Candidate applications will be connected here next.
+                </p>
+            </div>
+
+<a href="{% url 'job-apply-page' job.id %}"
+   class="filter-submit detail-button">
+    Apply Now →
+</a>
+
+        </aside>
+
+    </div>
+</section>
+
+{% endblock %}

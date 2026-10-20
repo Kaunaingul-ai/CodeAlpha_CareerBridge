@@ -1,0 +1,136 @@
+
+{% extends "base.html" %}
+
+{% block title %}Find Jobs | CareerBridge{% endblock %}
+
+{% block content %}
+
+<section class="listing-hero">
+    <div class="container">
+        <span class="section-kicker">YOUR NEXT OPPORTUNITY</span>
+        <h1>Find work you <span>love doing.</span></h1>
+        <p>Explore exciting opportunities from employers and find your next career move.</p>
+    </div>
+</section>
+
+<section class="listing-section">
+    <div class="container listing-layout">
+
+        <aside class="filter-panel">
+            <div class="filter-heading">
+                <h2>Filter jobs</h2>
+                <a href="{% url 'job-list-page' %}">Reset</a>
+            </div>
+
+            <form method="get">
+                <label for="job-keyword">Job title or keyword</label>
+                <input
+                    id="job-keyword"
+                    type="search"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Python, developer..."
+                >
+
+                <label for="job-location">Location</label>
+                <input
+                    id="job-location"
+                    type="text"
+                    name="location"
+                    value="{{ location }}"
+                    placeholder="City or region"
+                >
+
+                <label for="job-type">Employment type</label>
+                <select id="job-type" name="job_type">
+                    <option value="">All job types</option>
+                    {% for value, label in job_types %}
+                        {% if selected_job_type == value %}
+                            <option value="{{ value }}" selected>{{ label }}</option>
+                        {% else %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="filter-submit">
+                    Apply Filters →
+                </button>
+            </form>
+
+            <div class="filter-tip">
+                <span>✦</span>
+                <p>Find the right opportunity by refining your search.</p>
+            </div>
+        </aside>
+
+        <div class="listing-results">
+            <div class="results-header">
+                <div>
+                    <span class="section-kicker">AVAILABLE OPPORTUNITIES</span>
+                    <h2>Explore open positions</h2>
+                    <p>{{ total_jobs }} matching job{{ total_jobs|pluralize }}</p>
+                </div>
+                <span class="results-pill">✦ CareerBridge Jobs</span>
+            </div>
+
+            <div class="listing-cards">
+                {% for job in jobs %}
+                <article class="listing-job-card">
+                    <div class="listing-card-head">
+                        <div class="listing-company-icon">
+                            {{ job.employer.company_name|slice:":1"|upper }}
+                        </div>
+                        <div class="listing-company-details">
+                            <h3>{{ job.title }}</h3>
+                            <p>{{ job.employer.company_name }}</p>
+                        </div>
+                        <span class="job-type-badge">
+                            {{ job.get_job_type_display }}
+                        </span>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span>📍 {{ job.location }}</span>
+                        <span>💼 {{ job.get_job_type_display }}</span>
+                        <span>🕒 {{ job.created_at|date:"M d, Y" }}</span>
+                    </div>
+
+                    <p class="listing-description">
+                        {{ job.description|truncatewords:35 }}
+                    </p>
+
+                    <div class="listing-card-bottom">
+                        <div class="listing-salary">
+                            <small>Listed salary</small>
+                            <strong>
+                                {% if job.salary %}
+                                    {{ job.salary|floatformat:0 }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                       <a href="{% url 'job-detail-page' job.id %}" class="listing-view-label">
+    View Details →
+</a>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="empty-jobs">
+                    <div class="empty-jobs-icon">🔎</div>
+                    <h3>No opportunities found</h3>
+                    <p>Try another keyword, location, or employment type.</p>
+                    <a href="{% url 'job-list-page' %}" class="btn btn-primary">
+                        Clear Filters
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
