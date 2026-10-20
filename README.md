@@ -239,6 +239,7 @@ Backend Development Intern | CodeAlpha — October 2026
 Passionate about Python, Django, backend development, RESTful APIs, and building practical software applications.
 
 **GitHub:** [https://github.com/Kaunaingul-ai]
+
 **LinkedIn:** [https://www.linkedin.com/in/kaunain-gul-khalid-283949427/]
 
 
