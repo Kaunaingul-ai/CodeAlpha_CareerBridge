@@ -32,3 +32,6 @@ htmlcov/
 
 # Local test documents
 test_assets/
+
+# Generated Django static files
+staticfiles/
