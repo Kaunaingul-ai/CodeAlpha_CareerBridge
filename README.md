@@ -14,6 +14,16 @@ CareerBridge demonstrates backend development through authentication, database m
 
 The project combines a responsive frontend with a Django backend to simulate a realistic recruitment workflow.
 
+## Live Demo
+
+🌐 **Live Website:** https://codealphacareerbridge-production.up.railway.app/
+
+CareerBridge is deployed on Railway with a PostgreSQL database.
+
+The live demonstration includes job discovery, candidate and employer accounts, resume uploads, job applications, recruitment status management, and protected resume downloads.
+
+**Note:** Demo job listings and candidate accounts are fictional and used for testing purposes.
+
 ## Key Features
 
 ### Candidate Features
